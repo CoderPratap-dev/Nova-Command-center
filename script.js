@@ -591,3 +591,159 @@ linkModal.addEventListener("click", (event) => {
 // Initial render
 
 renderQuickLinks();
+
+
+let focusTime = 25 * 60;
+let breakTime = 5 * 60;
+
+let timeLeft = focusTime;
+
+let timer = null;
+
+let running = false;
+
+let focusMode = true;
+
+let sessions =
+Number(localStorage.getItem("sessions")) || 0;
+
+const timerDisplay =
+document.getElementById("timerDisplay");
+
+const timerMode =
+document.getElementById("timerMode");
+
+const sessionCounter =
+document.getElementById("sessionCounter");
+
+updateSession();
+
+updateTimer();
+
+function updateSession(){
+
+    sessionCounter.textContent =
+    `Sessions Completed: ${sessions}`;
+
+}
+
+function updateTimer(){
+
+    const m =
+    Math.floor(timeLeft/60);
+
+    const s =
+    timeLeft%60;
+
+    timerDisplay.textContent =
+    `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+}
+
+function startTimer(){
+
+    if(running) return;
+
+    running=true;
+
+    timer=setInterval(()=>{
+
+        if(timeLeft>0){
+
+            timeLeft--;
+
+            updateTimer();
+
+        }else{
+
+            clearInterval(timer);
+
+            running=false;
+
+            switchMode();
+
+        }
+
+    },1000);
+
+}
+
+function pauseTimer(){
+
+    clearInterval(timer);
+
+    running=false;
+
+}
+
+function resetTimer(){
+
+    clearInterval(timer);
+
+    running=false;
+
+    focusMode=true;
+
+    timeLeft=focusTime;
+
+    timerMode.textContent="🍅 Focus Session";
+
+    updateTimer();
+
+}
+
+function switchMode(){
+
+    if(Notification.permission==="granted"){
+
+        new Notification("Pomodoro Timer",{
+
+            body:focusMode
+            ?"Focus session completed!"
+            :"Break finished!"
+
+        });
+
+    }
+
+    if(focusMode){
+
+        sessions++;
+
+        localStorage.setItem("sessions",sessions);
+
+        updateSession();
+
+        focusMode=false;
+
+        timerMode.textContent="☕ Break Time";
+
+        timeLeft=breakTime;
+
+    }else{
+
+        focusMode=true;
+
+        timerMode.textContent="🍅 Focus Session";
+
+        timeLeft=focusTime;
+
+    }
+
+    updateTimer();
+
+}
+
+document
+.getElementById("startTimer")
+.onclick=startTimer;
+
+document
+.getElementById("pauseTimer")
+.onclick=pauseTimer;
+
+document
+.getElementById("resetTimer")
+.onclick=resetTimer;
+
+Notification.requestPermission();

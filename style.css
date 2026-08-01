@@ -1014,3 +1014,95 @@ footer small {
 .custom-link-actions button:hover i {
     color: #08111f;
 }
+
+.pomodoro-section{
+
+    margin-top:70px;
+
+}
+
+.pomodoro-card{
+
+    max-width:500px;
+
+    margin:auto;
+
+    padding:40px;
+
+    text-align:center;
+
+}
+
+#timerMode{
+
+    color:var(--primary);
+
+    margin-bottom:20px;
+
+}
+
+#timerDisplay{
+
+    font-size:72px;
+
+    font-weight:700;
+
+    margin:20px 0;
+
+    font-family:'Orbitron',sans-serif;
+
+}
+
+.timer-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:30px;
+
+    flex-wrap:wrap;
+
+}
+
+.timer-buttons button{
+
+    padding:14px 25px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--primary);
+
+    color:#08111f;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.timer-buttons button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 20px var(--primary-soft);
+
+}
+
+#sessionCounter{
+
+    margin-top:15px;
+
+    color:var(--muted);
+
+    font-size:17px;
+
+}
