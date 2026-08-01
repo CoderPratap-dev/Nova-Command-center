@@ -108,7 +108,7 @@ For development, **VS Code + Live Server** is recommended.
 Add your GitHub Pages or other deployment URL here:
 
 ```text
-YOUR-LIVE-DEMO-LINK
+https://coderpratap-dev.github.io/Nova-Command-center/
 ```
 
 ## 🔐 API Keys
