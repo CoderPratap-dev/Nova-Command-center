@@ -34,7 +34,7 @@
     <header>
       <nav>
         <div class="logo">
-          <i class="fa-solid fa-moon" ></i>
+          <i class="fa-solid fa-moon"></i>
 
           <span>Nova Command Center</span>
         </div>
@@ -72,64 +72,40 @@
         </div>
       </section>
 
-      <section>
+      <section id="quickLinksSection">
         <h2 class="section-title">Quick Links</h2>
 
-        <div class="links">
-          <!-- Quick Link Cards -->
+        <div class="links" id="quickLinks"></div>
 
-          <div class="card" onclick="window.open('https://github.com')">
-            <i class="fa-brands fa-github"></i>
+        <button class="add-link-btn" id="addLinkBtn">
+          <i class="fa-solid fa-plus"></i>
+          Add Quick Link
+        </button>
+      </section>
 
-            <h3>GitHub</h3>
+      <!-- Add/Edit Link Modal -->
 
-            <p>Repositories</p>
+      <div class="link-modal" id="linkModal">
+        <div class="link-modal-content glass">
+          <div class="modal-header">
+            <h3 id="modalTitle">Add Quick Link</h3>
+
+            <button id="closeModal">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
 
-          <div class="card" onclick="window.open('https://chat.openai.com')">
-            <i class="fa-solid fa-robot"></i>
+          <input type="text" id="linkName" placeholder="Website name" />
 
-            <h3>ChatGPT</h3>
+          <input type="url" id="linkURL" placeholder="https://example.com" />
 
-            <p>AI Assistant</p>
-          </div>
+          <div class="modal-actions">
+            <button id="cancelLink">Cancel</button>
 
-          <div class="card" onclick="window.open('https://youtube.com')">
-            <i class="fa-brands fa-youtube"></i>
-
-            <h3>YouTube</h3>
-
-            <p>Videos</p>
-          </div>
-
-          <div class="card" onclick="window.open('https://mail.google.com')">
-            <i class="fa-solid fa-envelope"></i>
-
-            <h3>Gmail</h3>
-
-            <p>Inbox</p>
-          </div>
-
-          <div
-            class="card"
-            onclick="window.open('https://developer.mozilla.org')"
-          >
-            <i class="fa-solid fa-code"></i>
-
-            <h3>MDN Docs</h3>
-
-            <p>Documentation</p>
-          </div>
-
-          <div class="card" onclick="window.open('https://stackoverflow.com')">
-            <i class="fa-brands fa-stack-overflow"></i>
-
-            <h3>Stack Overflow</h3>
-
-            <p>Community</p>
+            <button id="saveLink">Save Link</button>
           </div>
         </div>
-      </section>
+      </div>
       <!-- Dashboard -->
 
       <section>
@@ -173,7 +149,7 @@
                   display: none;
                   width: 100%;
                   height: 220px;
-                  border: none;
+                  border: none; 
                   border-radius: 16px;
                 "
               >

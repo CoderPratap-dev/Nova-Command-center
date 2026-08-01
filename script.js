@@ -250,3 +250,344 @@ themeToggle.addEventListener("click", function () {
     updateThemeIcon();
 
 });
+
+// ========================================
+// EDITABLE QUICK LINKS
+// ========================================
+
+const quickLinksContainer =
+    document.getElementById("quickLinks");
+
+const addLinkBtn =
+    document.getElementById("addLinkBtn");
+
+const linkModal =
+    document.getElementById("linkModal");
+
+const closeModal =
+    document.getElementById("closeModal");
+
+const cancelLink =
+    document.getElementById("cancelLink");
+
+const saveLink =
+    document.getElementById("saveLink");
+
+const linkName =
+    document.getElementById("linkName");
+
+const linkURL =
+    document.getElementById("linkURL");
+
+const modalTitle =
+    document.getElementById("modalTitle");
+
+let editingIndex = null;
+
+
+// Default links
+
+const defaultLinks = [
+
+    {
+        name: "GitHub",
+        url: "https://github.com",
+        icon: "fa-brands fa-github"
+    },
+
+    {
+        name: "YouTube",
+        url: "https://youtube.com",
+        icon: "fa-brands fa-youtube"
+    },
+
+    {
+        name: "Google",
+        url: "https://google.com",
+        icon: "fa-brands fa-google"
+    },
+
+    {
+        name: "Gmail",
+        url: "https://mail.google.com",
+        icon: "fa-solid fa-envelope"
+    }
+
+];
+
+
+// Load saved links
+
+let quickLinks =
+    JSON.parse(localStorage.getItem("quickLinks"))
+    || defaultLinks;
+
+
+// Save links
+
+function saveQuickLinks() {
+
+    localStorage.setItem(
+        "quickLinks",
+        JSON.stringify(quickLinks)
+    );
+
+}
+
+// Render links
+
+function renderQuickLinks() {
+
+    quickLinksContainer.innerHTML = "";
+
+    quickLinks.forEach((link, index) => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "card custom-link";
+
+        card.innerHTML = `
+
+            <div class="custom-link-actions">
+
+                <button onclick="editQuickLink(${index})"title="Edit">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+
+                <button onclick="deleteQuickLink(${index})"title="Delete">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+
+            </div>
+
+            <i class="${link.icon || "fa-solid fa-link"}"></i>
+
+            <h3>${link.name}</h3>
+
+            <p>${new URL(link.url).hostname}</p>
+
+        `;
+
+
+        card.addEventListener("click", (event) => {
+
+            if (
+                event.target.closest(
+                    ".custom-link-actions"
+                )
+            ) {
+
+                return;
+
+            }
+
+            window.location.href = link.url;
+
+        });
+
+
+        quickLinksContainer.appendChild(card);
+
+    });
+
+}
+
+
+// Open modal
+
+function openLinkModal(index = null) {
+
+    editingIndex = index;
+
+    linkModal.classList.add("active");
+
+    if (index === null) {
+
+        modalTitle.textContent =
+            "Add Quick Link";
+
+        linkName.value = "";
+
+        linkURL.value = "";
+
+    } else {
+
+        modalTitle.textContent =
+            "Edit Quick Link";
+
+        linkName.value =
+            quickLinks[index].name;
+
+        linkURL.value =
+            quickLinks[index].url;
+
+    }
+
+    linkName.focus();
+
+}
+
+
+// Close modal
+
+function closeLinkModal() {
+
+    linkModal.classList.remove("active");
+
+    editingIndex = null;
+
+}
+
+
+// Add button
+
+addLinkBtn.addEventListener(
+    "click",
+    () => openLinkModal()
+);
+
+
+// Close buttons
+
+closeModal.addEventListener(
+    "click",
+    closeLinkModal
+);
+
+cancelLink.addEventListener(
+    "click",
+    closeLinkModal
+);
+
+
+// Save link
+
+saveLink.addEventListener("click", () => {
+
+    const name =
+        linkName.value.trim();
+
+    let url =
+        linkURL.value.trim();
+
+
+    if (!name || !url) {
+
+        alert("Please enter both name and URL.");
+
+        return;
+
+    }
+
+
+    // Add https automatically
+
+    if (
+        !url.startsWith("http://") &&
+        !url.startsWith("https://")
+    ) {
+
+        url = "https://" + url;
+
+    }
+
+
+    try {
+
+        new URL(url);
+
+    } catch {
+
+        alert("Please enter a valid URL.");
+
+        return;
+
+    }
+
+
+    const link = {
+
+        name: name,
+
+        url: url,
+
+        icon: "fa-solid fa-link"
+
+    };
+
+
+    if (editingIndex === null) {
+
+        quickLinks.push(link);
+
+    } else {
+
+        quickLinks[editingIndex] = {
+
+            ...quickLinks[editingIndex],
+
+            name: name,
+
+            url: url
+
+        };
+
+    }
+
+
+    saveQuickLinks();
+
+    renderQuickLinks();
+
+    closeLinkModal();
+
+});
+
+
+// Edit
+
+window.editQuickLink = function(index) {
+
+    openLinkModal(index);
+
+};
+
+
+// Delete
+
+window.deleteQuickLink = function(index) {
+
+    const confirmed =
+        confirm(
+            `Delete "${quickLinks[index].name}"?`
+        );
+
+    if (!confirmed) return;
+
+    quickLinks.splice(index, 1);
+
+    saveQuickLinks();
+
+    renderQuickLinks();
+
+};
+
+
+// Close modal by clicking outside
+
+linkModal.addEventListener("click", (event) => {
+
+    if (event.target === linkModal) {
+
+        closeLinkModal();
+
+    }
+
+});
+
+
+// Initial render
+
+renderQuickLinks();

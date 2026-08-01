@@ -723,3 +723,294 @@ footer small {
         flex-direction: column;
     }
 }
+
+.add-link-btn {
+
+    display: block;
+
+    margin: 25px auto 60px;
+
+    padding: 13px 22px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: var(--primary);
+
+    color: #08111f;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+}
+
+.add-link-btn:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 0 25px var(--primary-soft);
+
+}
+
+
+/* Link card */
+
+.custom-link {
+
+    position: relative;
+
+}
+
+.custom-link-actions {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 10px;
+
+    display: flex;
+
+    gap: 6px;
+
+    z-index: 5;
+
+}
+
+.custom-link-actions button {
+
+    width: 30px;
+
+    height: 30px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+.custom-link-actions button:hover {
+
+    background: var(--primary);
+
+    color: #08111f;
+
+}
+
+
+/* Modal */
+
+.link-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 2000;
+
+    padding: 20px;
+
+}
+
+.link-modal.active {
+
+    display: flex;
+
+}
+
+.link-modal-content {
+
+    width: min(450px, 100%);
+
+    padding: 30px;
+
+}
+
+.modal-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+}
+
+.modal-header h3 {
+
+    color: var(--primary);
+
+}
+
+.modal-header button {
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    cursor: pointer;
+
+}
+
+.link-modal-content input {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-bottom: 15px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    outline: none;
+
+    background: var(--surface-strong);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+}
+
+.link-modal-content input:focus {
+
+    border-color: var(--primary);
+
+}
+
+.modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 10px;
+
+}
+
+.modal-actions button {
+
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+}
+
+#cancelLink {
+
+    background: var(--surface);
+
+    color: var(--text);
+
+}
+
+#saveLink {
+
+    background: var(--primary);
+
+    color: #08111f;
+
+}
+
+@media (max-width: 480px) {
+
+    .modal-actions {
+
+        flex-direction: column;
+
+    }
+
+}
+
+.custom-link-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+}
+
+.custom-link-actions button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.45);
+    color: white;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* IMPORTANT: override .card i */
+.custom-link-actions button i {
+    font-size: 14px;
+    margin: 0;
+    color: white;
+    position: static;
+    text-shadow: none;
+}
+
+.custom-link-actions button:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+}
+
+
+.custom-link-actions button:hover i {
+    color: #08111f;
+}
