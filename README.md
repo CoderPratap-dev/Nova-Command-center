@@ -90,13 +90,13 @@ nova-command-center/
 Clone the repository:
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/CoderPratap-dev/Nova-Command-center.git
 ```
 
 Move into the project:
 
 ```bash
-cd YOUR_REPOSITORY_NAME
+cd Nova-Command-center
 ```
 
 Then open `index.html` in a browser.
