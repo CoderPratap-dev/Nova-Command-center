@@ -2,205 +2,84 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Nova Command Center</title>
 
     <link rel="stylesheet" href="style.css" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    />
   </head>
+
   <body>
-    <div class="background">
-      <div class="stars"></div>
+    <main class="container">
+      <!-- Clock -->
+      <section class="clock-section">
+        <h1 id="clock">00:00</h1>
 
-      <div class="glow glow1"></div>
+        <p id="date">Loading date...</p>
 
-      <div class="glow glow2"></div>
-    </div>
+        <p id="nasaTitle"></p>
 
-    <header>
-      <nav>
-        <div class="logo">
-          <i class="fa-solid fa-moon"></i>
-
-          <span>Nova Command Center</span>
-        </div>
-
-        <ul>
-          <li><a href="#">Home</a></li>
-
-          <li><a href="#">Dashboard</a></li>
-
-          <li><a href="#">About</a></li>
-        </ul>
-
-        <div class="nav-icons">
-          <i class="fa-solid fa-moon" id="themeToggle"></i>
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero glass">
-        <h3 id="greeting">Good Evening</h3>
-
-        <h1 id="clock">00:00:00</h1>
-
-        <p id="date">Loading...</p>
+        <p id="greeting">Good day</p>
       </section>
 
-      <section class="glass search-section">
-        <div class="search-container">
-          <i class="fa-solid fa-magnifying-glass"></i>
+      <!-- Search -->
+      <form id="searchForm" class="search-box">
+        <span>🔍</span>
 
-          <input type="text" id="search" placeholder="Search Google..." />
-        </div>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search the web..."
+          autocomplete="off"
+        />
+      </form>
+
+      <!-- Quick Links -->
+      <section class="quick-links">
+        <a href="https://github.com" >
+          <span>◉</span>
+          GitHub
+        </a>
+
+        <a href="https://youtube.com" >
+          <span>▶</span>
+          YouTube
+        </a>
+
+        <a href="https://google.com" >
+          <span>G</span>
+          Google
+        </a>
+
+        <a href="https://mail.google.com" >
+          <span>✉</span>
+          Gmail
+        </a>
+
+        <a href="https://reddit.com">
+          <span>●</span>
+          Reddit
+        </a>
       </section>
 
-      <section id="quickLinksSection">
-        <h2 class="section-title">Quick Links</h2>
+      <!-- Todo -->
+      <section class="todo">
+        <h2>My Tasks</h2>
 
-        <div class="links" id="quickLinks"></div>
+        <form id="todoForm">
+          <input
+            type="text"
+            id="todoInput"
+            placeholder="Add a task..."
+            autocomplete="off"
+          />
 
-        <button class="add-link-btn" id="addLinkBtn">
-          <i class="fa-solid fa-plus"></i>
-          Add Quick Link
-        </button>
-      </section>
+          <button type="submit">Add</button>
+        </form>
 
-      <!-- Add/Edit Link Modal -->
-
-      <div class="link-modal" id="linkModal">
-        <div class="link-modal-content glass">
-          <div class="modal-header">
-            <h3 id="modalTitle">Add Quick Link</h3>
-
-            <button id="closeModal">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          </div>
-
-          <input type="text" id="linkName" placeholder="Website name" />
-
-          <input type="url" id="linkURL" placeholder="https://example.com" />
-
-          <div class="modal-actions">
-            <button id="cancelLink">Cancel</button>
-
-            <button id="saveLink">Save Link</button>
-          </div>
-        </div>
-      </div>
-
-      <section class="pomodoro-section">
-        <h2 class="section-title">🍅 Focus Timer</h2>
-
-        <div class="pomodoro-card glass">
-          <h3 id="timerMode">🍅 Focus Session</h3>
-
-          <h1 id="timerDisplay">25:00</h1>
-
-          <p id="sessionCounter">Sessions Completed: 0</p>
-
-          <div class="timer-buttons">
-            <button id="startTimer">▶ Start</button>
-
-            <button id="pauseTimer">⏸ Pause</button>
-
-            <button id="resetTimer">🔄 Reset</button>
-          </div>
-        </div>
-      </section>
-      <!-- Dashboard -->
-
-      <section>
-        <h2 class="section-title">Dashboard</h2>
-
-        <div class="widgets">
-          <div class="widget glass">
-            <h3>
-              <i class="fa-solid fa-cloud-sun"></i>
-
-              Weather
-            </h3>
-
-            <div id="weather">
-              <h2 id="temperature">--°C</h2>
-
-              <p id="city">Loading...</p>
-
-              <p id="description">---</p>
-
-              <div class="weather-info">
-                <span id="humidity">💧 --%</span>
-
-                <span id="wind">💨 -- km/h</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="widget glass">
-            <h3>
-              <i class="fa-solid fa-rocket"></i>
-              NASA APOD
-            </h3>
-
-            <div id="nasaContainer">
-              <img id="apodImage" alt="NASA APOD" />
-
-              <iframe
-                id="apodVideo"
-                style="
-                  display: none;
-                  width: 100%;
-                  height: 220px;
-                  border: none;
-                  border-radius: 16px;
-                "
-              >
-              </iframe>
-
-              <h4 id="apodTitle">Loading...</h4>
-
-              <p id="apodDate"></p>
-            </div>
-          </div>
-
-          <div class="widget glass">
-            <h3>
-              <i class="fa-solid fa-list-check"></i>
-              Todo List
-            </h3>
-
-            <div class="todo-container">
-              <input
-                type="text"
-                id="todoInput"
-                placeholder="Add a new task..."
-              />
-              <button id="addTodo">Add</button>
-              <ul id="todoList"></ul>
-            </div>
-          </div>
-        </div>
+        <ul id="todoList"></ul>
       </section>
     </main>
-    <footer>
-      <p>Built with ❤️ by Himanshu Pratap</p>
-    </footer>
 
     <script src="script.js"></script>
   </body>
