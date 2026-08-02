@@ -123,7 +123,9 @@ function deleteTask(index) {
 }
 displayTasks();
 
-// Use DEMO_KEY .
+// =========================
+// NASA APOD BACKGROUND
+// =========================
 
 const NASA_API_KEY = "8Siq7M3TXzFhJH4kmBwB4BeEDhXuZ5dNsVP9S2qD";
 
@@ -134,12 +136,14 @@ async function loadNASAImage() {
     );
 
     if (!response.ok) {
-      throw new Error("NASA API request failed: " + response.status);
+      throw new Error(`NASA API error: ${response.status}`);
     }
 
     const data = await response.json();
 
-    // APOD can be an image or a video.
+    console.log("NASA APOD:", data);
+
+    // NASA APOD can be an image or video
 
     if (data.media_type === "image") {
       document.body.style.backgroundImage = `
@@ -147,16 +151,19 @@ async function loadNASAImage() {
                     rgba(0, 0, 0, 0.45),
                     rgba(0, 0, 0, 0.45)
                 ),
-                url("${data.url}")
+                url("${data.hdurl || data.url}")
             `;
 
       document.getElementById("nasaTitle").textContent = data.title;
     } else {
       document.getElementById("nasaTitle").textContent =
-        "NASA APOD: video today";
+        "NASA APOD is a video today.";
     }
   } catch (error) {
-    console.log("NASA APOD failed:", error);
+    console.error("NASA APOD failed:", error);
+
+    document.getElementById("nasaTitle").textContent =
+      "NASA background could not be loaded.";
   }
 }
 
