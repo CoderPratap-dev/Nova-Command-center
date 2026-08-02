@@ -125,7 +125,7 @@ displayTasks();
 
 // Use DEMO_KEY .
 
-const NASA_API_KEY = "DEMO_KEY";
+const NASA_API_KEY = "8Siq7M3TXzFhJH4kmBwB4BeEDhXuZ5dNsVP9S2qD";
 
 async function loadNASAImage() {
   try {
