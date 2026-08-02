@@ -1,749 +1,163 @@
-// Live Clock
+// CLOCK
+
 function updateClock() {
   const now = new Date();
 
-  const clock = document.getElementById("clock");
-  const date = document.getElementById("date");
-  const greeting = document.getElementById("greeting");
+  // Time
 
-  clock.textContent = now.toLocaleTimeString("en-IN", {
-    hour12: false,
+  const time = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
-  date.textContent = now.toLocaleDateString("en-IN", {
+  // Date
+
+  const date = now.toLocaleDateString([], {
     weekday: "long",
     day: "numeric",
     month: "long",
-    year: "numeric",
   });
 
+  document.getElementById("clock").textContent = time;
+
+  document.getElementById("date").textContent = date;
+
+  // Greeting
+
   const hour = now.getHours();
+
+  let greeting;
+
   if (hour < 12) {
-    greeting.textContent = "🌅 Good Morning";
-  } else if (hour < 17) {
-    greeting.textContent = "☀️ Good Afternoon";
-  } else if (hour < 21) {
-    greeting.textContent = "🌇 Good Evening";
+    greeting = "Good Morning";
+  } else if (hour < 18) {
+    greeting = "Good Afternoon";
   } else {
-    greeting.textContent = "🌙 Good Night";
+    greeting = "Good Evening";
   }
+
+  document.getElementById("greeting").textContent = greeting;
 }
 
 updateClock();
+
 setInterval(updateClock, 1000);
-// Google Search
-const searchInput = document.getElementById("search");
 
-searchInput.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    const query = this.value.trim();
+// SEARCH
 
-    if (query !== "") {
-      window.open(
-        "https://www.google.com/search?q=" + encodeURIComponent(query),
-        "_self",
-      );
-    }
+const searchForm = document.getElementById("searchForm");
+
+const searchInput = document.getElementById("searchInput");
+
+searchForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const search = searchInput.value.trim();
+
+  if (search !== "") {
+    const url = "https://www.google.com/search?q=" + encodeURIComponent(search);
+
+    window.location.href = url;
   }
 });
 
-document.querySelectorAll(".card").forEach((card) => {
-  card.addEventListener("mouseenter", () => {
-    card.style.transform = "translateY(-10px) scale(1.03)";
-  });
+// TODO LIST
 
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "";
-  });
-});
+const todoForm = document.getElementById("todoForm");
 
 const todoInput = document.getElementById("todoInput");
-const addTodo = document.getElementById("addTodo");
+
 const todoList = document.getElementById("todoList");
 
-let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-function saveTodos() {
-  localStorage.setItem("todos", JSON.stringify(todos));
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function renderTodos() {
+function displayTasks() {
   todoList.innerHTML = "";
 
-  todos.forEach((todo, index) => {
+  tasks.forEach(function (task, index) {
     const li = document.createElement("li");
 
-    li.innerHTML = `
-            <span>${todo}</span>
-            <button onclick="deleteTodo(${index})">
-                Delete
-            </button>
-        `;
+    const text = document.createElement("span");
+
+    text.textContent = task;
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.textContent = "✕";
+
+    deleteButton.addEventListener("click", function () {
+      deleteTask(index);
+    });
+
+    li.appendChild(text);
+
+    li.appendChild(deleteButton);
 
     todoList.appendChild(li);
   });
 }
 
-function deleteTodo(index) {
-  todos.splice(index, 1);
+todoForm.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-  saveTodos();
-
-  renderTodos();
-}
-
-addTodo.addEventListener("click", () => {
   const task = todoInput.value.trim();
 
-  if (task === "") return;
+  if (task !== "") {
+    tasks.push(task);
 
-  todos.push(task);
+    saveTasks();
 
-  saveTodos();
-
-  renderTodos();
-
-  todoInput.value = "";
-});
-
-todoInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    addTodo.click();
+    displayTasks();
+    todoInput.value = "";
   }
 });
 
-renderTodos();
-
-const API_KEY = "98e1583d2c330e7cea19f2ab975d3ea8";
-
-async function loadWeather() {
-  if (!navigator.geolocation) {
-    document.getElementById("city").textContent = "Location unavailable";
-
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async (position) => {
-    const lat = position.coords.latitude;
-
-    const lon = position.coords.longitude;
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-
-    try {
-      const response = await fetch(url);
-
-      const data = await response.json();
-
-      document.getElementById("temperature").textContent =
-        Math.round(data.main.temp) + "°C";
-
-      document.getElementById("city").textContent = data.name;
-
-      document.getElementById("description").textContent =
-        data.weather[0].description;
-
-      document.getElementById("humidity").textContent =
-        "💧 " + data.main.humidity + "%";
-
-      document.getElementById("wind").textContent =
-        "💨 " + data.wind.speed + " m/s";
-    } catch (error) {
-      document.getElementById("city").textContent = "Weather unavailable";
-    }
-  });
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  saveTasks();
+  displayTasks();
 }
+displayTasks();
 
-loadWeather();
+// Use DEMO_KEY .
 
+const NASA_API_KEY = "DEMO_KEY";
 
-const NASA_API_KEY = "8Siq7M3TXzFhJH4kmBwB4BeEDhXuZ5dNsVP9S2qD";
-
-async function loadNASA() {
-
-    try {
-
-        const response = await fetch(
-            `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
-        );
-
-        const data = await response.json();
-
-        const img = document.getElementById("apodImage");
-        const video = document.getElementById("apodVideo");
-
-        document.getElementById("apodTitle").textContent = data.title;
-        document.getElementById("apodDate").textContent = data.date;
-
-        if (data.media_type === "image") {
-
-            img.src = data.url;
-            img.style.display = "block";
-            video.style.display = "none";
-
-        } else {
-
-            img.style.display = "none";
-            video.src = data.url;
-            video.style.display = "block";
-
-        }
-
-    } catch (err) {
-
-        console.error(err);
-
-        document.getElementById("apodTitle").textContent =
-            "Unable to load NASA APOD.";
-
-    }
-
-}
-
-loadNASA();
-
-const themeToggle = document.getElementById("themeToggle");
-
-function updateThemeIcon() {
-
-    if (document.body.classList.contains("light")) {
-
-        themeToggle.classList.remove("fa-moon");
-        themeToggle.classList.add("fa-sun");
-
-    } else {
-
-        themeToggle.classList.remove("fa-sun");
-        themeToggle.classList.add("fa-moon");
-
-    }
-
-}
-
-// Load saved theme
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "light") {
-
-    document.body.classList.add("light");
-
-}
-
-updateThemeIcon();
-
-
-// Button click
-themeToggle.addEventListener("click", function () {
-
-    document.body.classList.toggle("light");
-
-    if (document.body.classList.contains("light")) {
-
-        localStorage.setItem("theme", "light");
-
-    } else {
-
-        localStorage.setItem("theme", "dark");
-
-    }
-
-    updateThemeIcon();
-
-});
-
-// ========================================
-// EDITABLE QUICK LINKS
-// ========================================
-
-const quickLinksContainer =
-    document.getElementById("quickLinks");
-
-const addLinkBtn =
-    document.getElementById("addLinkBtn");
-
-const linkModal =
-    document.getElementById("linkModal");
-
-const closeModal =
-    document.getElementById("closeModal");
-
-const cancelLink =
-    document.getElementById("cancelLink");
-
-const saveLink =
-    document.getElementById("saveLink");
-
-const linkName =
-    document.getElementById("linkName");
-
-const linkURL =
-    document.getElementById("linkURL");
-
-const modalTitle =
-    document.getElementById("modalTitle");
-
-let editingIndex = null;
-
-
-// Default links
-
-const defaultLinks = [
-
-    {
-        name: "GitHub",
-        url: "https://github.com",
-        icon: "fa-brands fa-github"
-    },
-
-    {
-        name: "YouTube",
-        url: "https://youtube.com",
-        icon: "fa-brands fa-youtube"
-    },
-
-    {
-        name: "Google",
-        url: "https://google.com",
-        icon: "fa-brands fa-google"
-    },
-
-    {
-        name: "Gmail",
-        url: "https://mail.google.com",
-        icon: "fa-solid fa-envelope"
-    }
-
-];
-
-
-// Load saved links
-
-let quickLinks =
-    JSON.parse(localStorage.getItem("quickLinks"))
-    || defaultLinks;
-
-
-// Save links
-
-function saveQuickLinks() {
-
-    localStorage.setItem(
-        "quickLinks",
-        JSON.stringify(quickLinks)
+async function loadNASAImage() {
+  try {
+    const response = await fetch(
+      `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`,
     );
 
-}
+    if (!response.ok) {
+      throw new Error("NASA API request failed: " + response.status);
+    }
 
-// Render links
+    const data = await response.json();
 
-function renderQuickLinks() {
+    // APOD can be an image or a video.
 
-    quickLinksContainer.innerHTML = "";
+    if (data.media_type === "image") {
+      document.body.style.backgroundImage = `
+                linear-gradient(
+                    rgba(0, 0, 0, 0.45),
+                    rgba(0, 0, 0, 0.45)
+                ),
+                url("${data.url}")
+            `;
 
-    quickLinks.forEach((link, index) => {
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "card custom-link";
-
-        card.innerHTML = `
-
-            <div class="custom-link-actions">
-
-                <button onclick="editQuickLink(${index})"title="Edit">
-                    <i class="fa-solid fa-pen"></i>
-                </button>
-
-                <button onclick="deleteQuickLink(${index})"title="Delete">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-
-            </div>
-
-            <i class="${link.icon || "fa-solid fa-link"}"></i>
-
-            <h3>${link.name}</h3>
-
-            <p>${new URL(link.url).hostname}</p>
-
-        `;
-
-
-        card.addEventListener("click", (event) => {
-
-            if (
-                event.target.closest(
-                    ".custom-link-actions"
-                )
-            ) {
-
-                return;
-
-            }
-
-            window.location.href = link.url;
-
-        });
-
-
-        quickLinksContainer.appendChild(card);
-
-    });
-
-}
-
-
-// Open modal
-
-function openLinkModal(index = null) {
-
-    editingIndex = index;
-
-    linkModal.classList.add("active");
-
-    if (index === null) {
-
-        modalTitle.textContent =
-            "Add Quick Link";
-
-        linkName.value = "";
-
-        linkURL.value = "";
-
+      document.getElementById("nasaTitle").textContent = data.title;
     } else {
-
-        modalTitle.textContent =
-            "Edit Quick Link";
-
-        linkName.value =
-            quickLinks[index].name;
-
-        linkURL.value =
-            quickLinks[index].url;
-
+      document.getElementById("nasaTitle").textContent =
+        "NASA APOD: video today";
     }
-
-    linkName.focus();
-
+  } catch (error) {
+    console.log("NASA APOD failed:", error);
+  }
 }
 
-
-// Close modal
-
-function closeLinkModal() {
-
-    linkModal.classList.remove("active");
-
-    editingIndex = null;
-
-}
-
-
-// Add button
-
-addLinkBtn.addEventListener(
-    "click",
-    () => openLinkModal()
-);
-
-
-// Close buttons
-
-closeModal.addEventListener(
-    "click",
-    closeLinkModal
-);
-
-cancelLink.addEventListener(
-    "click",
-    closeLinkModal
-);
-
-
-// Save link
-
-saveLink.addEventListener("click", () => {
-
-    const name =
-        linkName.value.trim();
-
-    let url =
-        linkURL.value.trim();
-
-
-    if (!name || !url) {
-
-        alert("Please enter both name and URL.");
-
-        return;
-
-    }
-
-
-    // Add https automatically
-
-    if (
-        !url.startsWith("http://") &&
-        !url.startsWith("https://")
-    ) {
-
-        url = "https://" + url;
-
-    }
-
-
-    try {
-
-        new URL(url);
-
-    } catch {
-
-        alert("Please enter a valid URL.");
-
-        return;
-
-    }
-
-
-    const link = {
-
-        name: name,
-
-        url: url,
-
-        icon: "fa-solid fa-link"
-
-    };
-
-
-    if (editingIndex === null) {
-
-        quickLinks.push(link);
-
-    } else {
-
-        quickLinks[editingIndex] = {
-
-            ...quickLinks[editingIndex],
-
-            name: name,
-
-            url: url
-
-        };
-
-    }
-
-
-    saveQuickLinks();
-
-    renderQuickLinks();
-
-    closeLinkModal();
-
-});
-
-
-// Edit
-
-window.editQuickLink = function(index) {
-
-    openLinkModal(index);
-
-};
-
-
-// Delete
-
-window.deleteQuickLink = function(index) {
-
-    const confirmed =
-        confirm(
-            `Delete "${quickLinks[index].name}"?`
-        );
-
-    if (!confirmed) return;
-
-    quickLinks.splice(index, 1);
-
-    saveQuickLinks();
-
-    renderQuickLinks();
-
-};
-
-
-// Close modal by clicking outside
-
-linkModal.addEventListener("click", (event) => {
-
-    if (event.target === linkModal) {
-
-        closeLinkModal();
-
-    }
-
-});
-
-
-// Initial render
-
-renderQuickLinks();
-
-
-let focusTime = 25 * 60;
-let breakTime = 5 * 60;
-
-let timeLeft = focusTime;
-
-let timer = null;
-
-let running = false;
-
-let focusMode = true;
-
-let sessions =
-Number(localStorage.getItem("sessions")) || 0;
-
-const timerDisplay =
-document.getElementById("timerDisplay");
-
-const timerMode =
-document.getElementById("timerMode");
-
-const sessionCounter =
-document.getElementById("sessionCounter");
-
-updateSession();
-
-updateTimer();
-
-function updateSession(){
-
-    sessionCounter.textContent =
-    `Sessions Completed: ${sessions}`;
-
-}
-
-function updateTimer(){
-
-    const m =
-    Math.floor(timeLeft/60);
-
-    const s =
-    timeLeft%60;
-
-    timerDisplay.textContent =
-    `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-
-}
-
-function startTimer(){
-
-    if(running) return;
-
-    running=true;
-
-    timer=setInterval(()=>{
-
-        if(timeLeft>0){
-
-            timeLeft--;
-
-            updateTimer();
-
-        }else{
-
-            clearInterval(timer);
-
-            running=false;
-
-            switchMode();
-
-        }
-
-    },1000);
-
-}
-
-function pauseTimer(){
-
-    clearInterval(timer);
-
-    running=false;
-
-}
-
-function resetTimer(){
-
-    clearInterval(timer);
-
-    running=false;
-
-    focusMode=true;
-
-    timeLeft=focusTime;
-
-    timerMode.textContent="🍅 Focus Session";
-
-    updateTimer();
-
-}
-
-function switchMode(){
-
-    if(Notification.permission==="granted"){
-
-        new Notification("Pomodoro Timer",{
-
-            body:focusMode
-            ?"Focus session completed!"
-            :"Break finished!"
-
-        });
-
-    }
-
-    if(focusMode){
-
-        sessions++;
-
-        localStorage.setItem("sessions",sessions);
-
-        updateSession();
-
-        focusMode=false;
-
-        timerMode.textContent="☕ Break Time";
-
-        timeLeft=breakTime;
-
-    }else{
-
-        focusMode=true;
-
-        timerMode.textContent="🍅 Focus Session";
-
-        timeLeft=focusTime;
-
-    }
-
-    updateTimer();
-
-}
-
-document
-.getElementById("startTimer")
-.onclick=startTimer;
-
-document
-.getElementById("pauseTimer")
-.onclick=pauseTimer;
-
-document
-.getElementById("resetTimer")
-.onclick=resetTimer;
-
-Notification.requestPermission();
+loadNASAImage();
