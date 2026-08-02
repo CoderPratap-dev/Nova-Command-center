@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Nova Command Center</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <!-- Clock -->
+      <section class="clock-section">
+        <h1 id="clock">00:00</h1>
+
+        <p id="date">Loading date...</p>
+
+        <p id="nasaTitle"></p>
+
+        <p id="greeting">Good day</p>
+      </section>
+
+      <!-- Search -->
+      <form id="searchForm" class="search-box">
+        <span>🔍</span>
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search the web..."
+          autocomplete="off"
+        />
+      </form>
+
+      <!-- Quick Links -->
+      <section class="quick-links">
+        <a href="https://github.com" >
+          <span>◉</span>
+          GitHub
+        </a>
+
+        <a href="https://youtube.com" >
+          <span>▶</span>
+          YouTube
+        </a>
+
+        <a href="https://google.com" >
+          <span>G</span>
+          Google
+        </a>
+
+        <a href="https://mail.google.com" >
+          <span>✉</span>
+          Gmail
+        </a>
+
+        <a href="https://reddit.com">
+          <span>●</span>
+          Reddit
+        </a>
+      </section>
+
+      <!-- Todo -->
+      <section class="todo">
+        <h2>My Tasks</h2>
+
+        <form id="todoForm">
+          <input
+            type="text"
+            id="todoInput"
+            placeholder="Add a task..."
+            autocomplete="off"
+          />
+
+          <button type="submit">Add</button>
+        </form>
+
+        <ul id="todoList"></ul>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
